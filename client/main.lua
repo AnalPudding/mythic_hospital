@@ -133,8 +133,9 @@ AddEventHandler('mythic_hospital:client:FinishServices', function()
 		local playerPos = GetEntityCoords(player, true)
 		NetworkResurrectLocalPlayer(playerPos, true, true, false)
 	end
-
-    SetEntityHealth(player, GetEntityMaxHealth(PlayerPedId()))
+	
+	SetEntityHealth(player, GetEntityMaxHealth(player))
+    ClearPedBloodDamage(player)
     SetPlayerSprint(PlayerId(), true)
     TriggerEvent('mythic_hospital:client:RemoveBleed')
     TriggerEvent('mythic_hospital:client:ResetLimbs')

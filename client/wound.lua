@@ -382,6 +382,24 @@ function DoBleedAlert()
     end
 end
 
+RegisterNetEvent('mythic_hospital:client:SyncLimbs')
+AddEventHandler('mythic_hospital:client:SyncLimbs', function(limbs)
+    BodyParts = limbs
+
+	injured = {}
+    for k, v in pairs(BodyParts) do
+        if v.isDamaged then
+            table.insert(injured, {
+                part = k,
+                label = v.label,
+                severity = v.severity
+            })
+        end
+    end
+
+    DoLimbAlert()
+end)
+
 RegisterNetEvent('mythic_hospital:client:SyncBleed')
 AddEventHandler('mythic_hospital:client:SyncBleed', function(bleedStatus)
     isBleeding = tonumber(bleedStatus)
