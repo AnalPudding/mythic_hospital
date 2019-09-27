@@ -500,7 +500,7 @@ Citizen.CreateThread(function()
 				end
 			end
 
-			SetPedMoveRateOverride(PlayerPedId(, Config.MovementRate[level])
+			SetPedMoveRateOverride(PlayerPedId(), Config.MovementRate[level])
 			
 			Citizen.Wait(5)
 		else
