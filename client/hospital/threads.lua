@@ -13,7 +13,7 @@ Citizen.CreateThread(function()
                     Print3DText(hospitalCheckin, 'Press ~r~[E] ~s~To Check In')
                     if IsControlJustReleased(0, 54) then
                         if (GetEntityHealth(PlayerPedId()) < 200) or (IsInjuredOrBleeding()) then
-                            exports['mythic_base']:FetchComponent('Progress'):ProgressWithStartEvent({
+                            exports['mythic_progbar']:ProgressWithStartEvent({
                                 name = "hospital_action",
                                 duration = 2500,
                                 label = 'Checking In',
