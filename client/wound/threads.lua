@@ -15,7 +15,7 @@ Citizen.CreateThread(function()
             DrawUIText(4, 0, 0.015, 0.72, 0.35, 255, 255, 255, 255, 'Next Damage: ~r~' .. tonumber(isBleeding) * Config.BleedTickDamage)
             DrawUIText(4, 0, 0.015, 0.74, 0.35, 255, 255, 255, 255, 'Bleed: ~r~' .. bleedTickTimer .. '~s~ / ~r~' .. Config.BleedTickRate .. '~s~ | ~r~' .. isBleeding)
             DrawUIText(4, 0, 0.015, 0.7, 0.35, 255, 255, 255, 255, 'Adv. Bleed: ~r~' .. advanceBleedTimer .. '~s~ / ~r~' .. Config.AdvanceBleedTimer)
-            DrawUIText(4, 0, 0.015, 0.68, 0.35, 255, 255, 255, 255, 'Fadeout: ~r~' .. blackoutTimer .. '~s~ / ~r~' .. Config.FadeOutTimer)
+            DrawUIText(4, 0, 0.015, 0.68, 0.35, 255, 255, 255, 255, 'Fadeout: ~r~' .. fadeOutTimer .. '~s~ / ~r~' .. Config.FadeOutTimer)
             DrawUIText(4, 0, 0.015, 0.66, 0.35, 255, 255, 255, 255, 'Blackout: ~r~' .. blackoutTimer .. '~s~ / ~r~' .. Config.BlackoutTimer)
             DrawUIText(4, 0, 0.015, 0.64, 0.35, 255, 255, 255, 255, 'Adrenaline: ~r~' .. onDrugs .. ' ~s~| ~r~' .. tostring(wasOnDrugs))
             DrawUIText(4, 0, 0.015, 0.62, 0.35, 255, 255, 255, 255, 'Painkiller: ~r~' .. onPainKiller .. ' ~s~| ~r~' .. tostring(wasOnPainKillers))
@@ -64,8 +64,8 @@ Citizen.CreateThread(function()
                             SetFlash(0, 0, 100, 500, 100)
                         end
 
-                        if fadeOutTimer % Config.FadeOutTimer == 0 then
-                            if blackoutTimer >= Config.BlackoutTimer then
+                        if fadeOutTimer + 1 == Config.FadeOutTimer then
+                            if blackoutTimer + 1 == Config.BlackoutTimer then
                                 exports['mythic_notify']:DoCustomHudText('inform', 'You Suddenly Black Out', 5000)
                                 SetFlash(0, 0, 100, 7000, 100)
 
@@ -88,13 +88,15 @@ Citizen.CreateThread(function()
                                     Citizen.Wait(0)
                                 end
                                 DoScreenFadeIn(500)
+
                                 if isBleeding > 3 then
                                     blackoutTimer = blackoutTimer + 2
                                 else
                                     blackoutTimer = blackoutTimer + 1
                                 end
-                                fadeOutTimer = 0
                             end
+
+                            fadeOutTimer = 0
                         else
                             fadeOutTimer = fadeOutTimer + 1
                         end
@@ -109,7 +111,6 @@ Citizen.CreateThread(function()
                         else
                             advanceBleedTimer = advanceBleedTimer + 1
                         end
-
                     end
                 end
                 bleedTickTimer = 0
@@ -176,11 +177,10 @@ Citizen.CreateThread(function()
 
         playerHealth = health
         playerArmor = armor
-        Citizen.Wait(500)
 
         if not isInHospitalBed then
             ProcessDamage(ped)
         end
-        Citizen.Wait(500)
+        Citizen.Wait(100)
     end
 end)

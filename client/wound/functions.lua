@@ -201,7 +201,7 @@ function DebugAlerts(ped, bone, weapon, damageDone)
         exports['mythic_notify']:SendAlert('inform', 'Major Weapon', 10000, { ['background-color'] = '#1e1e1e' })
     end
     exports['mythic_notify']:SendAlert('inform', 'Crit Area: ' .. tostring(Config.CriticalAreas[Config.Bones[bone]] ~= nil), 10000, { ['background-color'] = '#1e1e1e' })
-    exports['mythic_notify']:SendAlert('inform', 'Stagger Area: ' .. tostring(Config.StaggerAreas[Config.Bones[bone]] ~= nil and (Config.StaggerAreas[Config.Bones[bone]].armored or armor <= 0)), 10000, { ['background-color'] = '#1e1e1e' })
+    exports['mythic_notify']:SendAlert('inform', 'Stagger Area: ' .. tostring(Config.StaggerAreas[Config.Bones[bone]] ~= nil and (Config.StaggerAreas[Config.Bones[bone]].armored or GetPedArmour(ped   ) <= 0)), 10000, { ['background-color'] = '#1e1e1e' })
     exports['mythic_notify']:SendAlert('inform', 'Dmg Done: ' .. damageDone, 10000, { ['background-color'] = '#1e1e1e' })
 end
 
