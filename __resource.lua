@@ -10,6 +10,7 @@ client_scripts {
 	'config.lua',
 	
 	'client/shared/defines.lua',
+	'client/shared/functions.lua',
 
 	-- Wound Files
 	'client/wound/defines.lua',
