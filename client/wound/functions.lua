@@ -41,6 +41,7 @@ function ResetAll()
         v.isDamaged = false
         v.severity = 0
     end
+    
     TriggerServerEvent('mythic_hospital:server:SyncInjuries', {
         limbs = BodyParts,
         isBleeding = tonumber(isBleeding)
@@ -48,8 +49,8 @@ function ResetAll()
 
     ProcessRunStuff(PlayerPedId())
     DoLimbAlert()
-    ProcessRunStuff(PlayerPedId())
     DoBleedAlert()
+
     TriggerServerEvent('mythic_hospital:server:SyncInjuries', {
         limbs = BodyParts,
         isBleeding = tonumber(isBleeding)
@@ -192,10 +193,22 @@ function ProcessDamage(ped)
     end
 end
 
+function DebugAlerts(ped, bone, weapon, damageDone)
+    exports['mythic_notify']:SendAlert('inform', 'Bone: ' .. Config.Bones[bone], 10000, { ['background-color'] = '#760036' })
+    exports['mythic_notify']:SendAlert('inform', 'Weapon: Minor' .. tostring(Config.MinorInjurWeapons[weapon]) .. ' Major: ' .. tostring(Config.MajorInjurWeapons[weapon]), 10000, { ['background-color'] = '#760036' })
+    exports['mythic_notify']:SendAlert('inform', 'Crit Area: ' .. Config.CriticalAreas[Config.Bones[bone]] ~= nil, 10000, { ['background-color'] = '#760036' })
+    exports['mythic_notify']:SendAlert('inform', 'Stagger Area: ' .. Config.StaggerAreas[Config.Bones[bone]] ~= nil and (Config.StaggerAreas[Config.Bones[bone]].armored or armor <= 0), 10000, { ['background-color'] = '#760036' })
+    exports['mythic_notify']:SendAlert('inform', 'Dmg Done: ' .. damageDone, 10000, { ['background-color'] = '#760036' })
+end
+
 function CheckDamage(ped, bone, weapon, damageDone)
     if weapon == nil then return end
 
     if Config.Bones[bone] ~= nil and not IsEntityDead(ped) then
+        if Config.Debug then
+            DebugAlerts(ped, bone, weapon, damageDone)
+        end
+
         ApplyImmediateEffects(ped, bone, weapon, damageDone)
 
         if not BodyParts[Config.Bones[bone]].isDamaged then
@@ -231,7 +244,7 @@ function CheckDamage(ped, bone, weapon, damageDone)
     end
 end
 
-function ApplyImmediateEffects(ped)
+function ApplyImmediateEffects(ped, bone, weapon, damageDone)
     local armor = GetPedArmour(ped)
 
     if Config.MinorInjurWeapons[weapon] then
