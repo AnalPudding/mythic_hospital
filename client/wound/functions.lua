@@ -194,11 +194,15 @@ function ProcessDamage(ped)
 end
 
 function DebugAlerts(ped, bone, weapon, damageDone)
-    exports['mythic_notify']:SendAlert('inform', 'Bone: ' .. Config.Bones[bone], 10000, { ['background-color'] = '#760036' })
-    exports['mythic_notify']:SendAlert('inform', 'Weapon: Minor' .. tostring(Config.MinorInjurWeapons[weapon]) .. ' Major: ' .. tostring(Config.MajorInjurWeapons[weapon]), 10000, { ['background-color'] = '#760036' })
-    exports['mythic_notify']:SendAlert('inform', 'Crit Area: ' .. Config.CriticalAreas[Config.Bones[bone]] ~= nil, 10000, { ['background-color'] = '#760036' })
-    exports['mythic_notify']:SendAlert('inform', 'Stagger Area: ' .. Config.StaggerAreas[Config.Bones[bone]] ~= nil and (Config.StaggerAreas[Config.Bones[bone]].armored or armor <= 0), 10000, { ['background-color'] = '#760036' })
-    exports['mythic_notify']:SendAlert('inform', 'Dmg Done: ' .. damageDone, 10000, { ['background-color'] = '#760036' })
+    exports['mythic_notify']:SendAlert('inform', 'Bone: ' .. Config.Bones[bone], 10000, { ['background-color'] = '#1e1e1e' })
+    if (Config.MinorInjurWeapons[weapon] ~= nil) then
+        exports['mythic_notify']:SendAlert('inform', 'Minor Weapon', 10000, { ['background-color'] = '#1e1e1e' })
+    else
+        exports['mythic_notify']:SendAlert('inform', 'Major Weapon', 10000, { ['background-color'] = '#1e1e1e' })
+    end
+    exports['mythic_notify']:SendAlert('inform', 'Crit Area: ' .. tostring(Config.CriticalAreas[Config.Bones[bone]] ~= nil), 10000, { ['background-color'] = '#1e1e1e' })
+    exports['mythic_notify']:SendAlert('inform', 'Stagger Area: ' .. tostring(Config.StaggerAreas[Config.Bones[bone]] ~= nil and (Config.StaggerAreas[Config.Bones[bone]].armored or armor <= 0)), 10000, { ['background-color'] = '#1e1e1e' })
+    exports['mythic_notify']:SendAlert('inform', 'Dmg Done: ' .. damageDone, 10000, { ['background-color'] = '#1e1e1e' })
 end
 
 function CheckDamage(ped, bone, weapon, damageDone)
@@ -240,7 +244,9 @@ function CheckDamage(ped, bone, weapon, damageDone)
         DoLimbAlert()
         DoBleedAlert()
     else
-        print('Bone Not In Index - Report This! - ' .. bone)
+        if not IsEntityDead(ped) then
+            print('Bone Not In Index - Report This! - ' .. bone)
+        end
     end
 end
 
