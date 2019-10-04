@@ -1,5 +1,8 @@
+<<<<<<< Updated upstream
 Config = {}
 
+=======
+>>>>>>> Stashed changes
 Config.WeaponClasses = {
     ['SMALL_CALIBER'] = 1,
     ['MEDIUM_CALIBER'] = 2,

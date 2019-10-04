@@ -253,7 +253,11 @@ end
 function ApplyImmediateEffects(ped, bone, weapon, damageDone)
     local armor = GetPedArmour(ped)
 
+<<<<<<< Updated upstream
     if Config.MinorInjurWeapons[weapon] then
+=======
+    if Config.MinorInjurWeapons[weapon] and damageDone < Config.DamageMinorToMajor then
+>>>>>>> Stashed changes
         if Config.CriticalAreas[Config.Bones[bone]] then
             if armor <= 0 then
                 ApplyBleed(1)
@@ -265,7 +269,11 @@ function ApplyImmediateEffects(ped, bone, weapon, damageDone)
                 SetPedToRagdoll(ped, 1500, 2000, 3, true, true, false)
             end
         end
+<<<<<<< Updated upstream
     elseif Config.MajorInjurWeapons[weapon] then
+=======
+    elseif Config.MajorInjurWeapons[weapon] or (Config.MinorInjurWeapons[weapon] and damageDone >= Config.DamageMinorToMajor) then
+>>>>>>> Stashed changes
         if Config.CriticalAreas[Config.Bones[bone]] ~= nil then
             if armor > 0 and Config.CriticalAreas[Config.Bones[bone]].armored then
                 if isBleeding < 1 then

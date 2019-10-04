@@ -37,4 +37,18 @@ function DrawUIText(font, centre, x, y, scale, r, g, b, a, text)
     SetTextEntry("STRING")
     AddTextComponentString(text)
     DrawText(x , y) 
+<<<<<<< Updated upstream
+=======
+end
+
+function CreateBlip(blipData)
+    blipData.blip = AddBlipForCoord(blipData.x, blipData.y, blipData.z)
+    SetBlipSprite(blipData.blip, blipData.id)
+    SetBlipAsShortRange(blipData.blip, blipData.short)
+    SetBlipScale(blipData.blip, blipData.scale)
+    SetBlipColour(blipData.blip, blipData.color)
+    BeginTextCommandSetBlipName("STRING")
+    AddTextComponentString(blipData.name)
+    EndTextCommandSetBlipName(blipData.blip)
+>>>>>>> Stashed changes
 end

@@ -1,6 +1,3 @@
-Config.Debug = true
-
-<<<<<<< Updated upstream
 --[[
     HealthDamage : How Much Damage To Direct HP Must Be Applied Before Checks For Damage Happens
     ArmorDamage : How Much Damage To Armor Must Be Applied Before Checks For Damage Happens | NOTE: This will in turn make stagger effect with armor happen only after that damage occurs
@@ -9,62 +6,72 @@ Config.HealthDamage = 10
 Config.ArmorDamage = 5
 
 --[[
-    This Is The Timer For How Long The Player Will Be In The Bed When They Check-In To Be Healed Automatically, This Is In Seconds
+    AIHealTimer : How long it will take to be healed after checking in, in seconds
 ]]
 Config.AIHealTimer = 5
 
 --[[ 
-    TIMERS This Is In Seconds - This Will Decide How Long The Thread Controlling This Functionality Is Slept For
+    BleedTickRate : How much time, in seconds, between bleed ticks
 ]]
 Config.BleedTickRate = 30
 
 --[[
     BleedMovementTick : How many seconds is taken away from the bleed tick rate if the player is walking, jogging, or sprinting
     BleedMovementAdvance : How Much Time Moving While Bleeding Adds (This Adds This Value To The Tick Count, Meaing The Above BleedTickRate Will Be Reached Faster)
-=======
-Config.Debug = true
+]]
+Config.BleedMovementTick = 10
+Config.BleedMovementAdvance = 3
+
+--[[ 
+    FadeOutTimer : How many bleed ticks occur before fadeout happens
+]]
+Config.FadeOutTimer = 2
 
 --[[
-    GENERAL SETTINGS | THESE WILL AFFECT YOUR ENTIRE SERVER SO BE SURE TO SET THESE CORRECTLY
-    MaxHp : Maximum HP Allowed, set to -1 if you want to disable mythic_hospital from setting this
-    RegenRate : 
->>>>>>> Stashed changes
+    BlackoutTimer : How many bleed ticks occur before blacking out
 ]]
-Config.MaxHp = 200
-Config.RegenRate = 0
-
-Config.HiddenRevChance = 65
-Config.HiddenCooldown = 30
+Config.BlackoutTimer = 10
 
 --[[
-    Pricing
+    AdvanceBleedTimer : How many bleed ticks occur before bleed level increases
 ]]
-Config.InjuryBase = 100
-Config.HiddenInjuryBase = 1000
+Config.AdvanceBleedTimer = 10
 
 --[[
-
+    HeadInjuryTimer : How much time, in seconds, do head injury effects chance occur
+    ArmInjuryTimer : How much time, in seconds, do arm injury effects chance occur
+    LegInjuryTimer : How much time, in seconds, do leg injury effects chance occur
 ]]
-Config.Hospital = {
-    Location = { x = 308.06161499023, y = -595.19683837891, z = 43.291839599609, h = 180.4409942627 },
-    ShowBlip = true,
+Config.HeadInjuryTimer = 30
+Config.ArmInjuryTimer = 30
+Config.LegInjuryTimer = 15
+
+--[[
+    The Chance, In Percent, That Certain Injury Side-Effects Get Applied
+]]
+Config.HeadInjuryChance = 25
+Config.ArmInjuryChance = 25
+Config.LegInjuryChance = {
+    Running = 50,
+    Walking = 15
 }
-<<<<<<< Updated upstream
-=======
-Config.Hospital.Blip = { name = "Pillbox Medical Center", color = 38, id = 153, scale = 1.0, short = false, x = Config.Hospital.Location.x, y = Config.Hospital.Location.y, z = Config.Hospital.Location.z }
->>>>>>> Stashed changes
 
 --[[
-    Hidden: Location of the hidden location where you can heal and no alert of GSW's will be made.
+    The Base Damage That Is Multiplied By Bleed Level Every Time A Bleed Tick Occurs
 ]]
+Config.BleedTickDamage = 2
 
-<<<<<<< Updated upstream
 --[[
     MajorArmoredBleedChance : The % Chance Someone Gets A Bleed Effect Applied When Taking Major Damage With Armor
     MajorDoubleBleed : % Chance You Have To Receive Double Bleed Effect From Major Damage, This % is halved if the player has armor
 ]]
 Config.MajorArmoredBleedChance = 45
 Config.MajorDoubleBleed = 15
+
+--[[
+    DamgeMinorToMajor : How much damage would have to be applied for a minor weapon to be considered a major damage event. Put this at 100 if you want to disable it
+]]
+Config.DamageMinorToMajor = 45
 
 --[[
     These following lists uses tables defined in definitions.lua, you can technically use the hardcoded values but for sake
@@ -91,15 +98,8 @@ Config.MajorInjurWeapons = {
     [Config.WeaponClasses['HEAVY_IMPACT']] = true,
     [Config.WeaponClasses['SHOTGUN']] = true,
     [Config.WeaponClasses['EXPLOSIVE']] = true,
-=======
-Config.Hidden = {
-    Location = { x = 1969.2971191406, y = 3815.6735839844, z = 33.428680419922 },
-    ShowBlip = true,
->>>>>>> Stashed changes
 }
-Config.Hidden.Blip = { name = 'Hidden Medic', color = 12, id = 153, scale = 1.0, short = false, x = Config.Hidden.Location.x, y = Config.Hidden.Location.y, z = Config.Hidden.Location.z }
 
-<<<<<<< Updated upstream
 Config.CriticalAreas = {
     ['UPPER_BODY'] = { armored = false },
     ['LOWER_BODY'] = { armored = true },
@@ -114,9 +114,3 @@ Config.StaggerAreas = {
     ['LFOOT'] = { armored = true, major = 100, minor = 100 },
     ['RFOOT'] = { armored = true, major = 100, minor = 100 },
 }
-=======
-
--- Keys
-Config.Keys = {}
-Config.Keys.GetUp = 73 -- Key Used To Get Out Of Bed When Using /bed Command
->>>>>>> Stashed changes

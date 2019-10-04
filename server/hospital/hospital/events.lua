@@ -14,7 +14,6 @@ local beds = {
 }
 
 local bedsTaken = {}
-local injuryBasePrice = 100
 
 AddEventHandler('playerDropped', function()
     if bedsTaken[source] ~= nil then
@@ -48,37 +47,25 @@ AddEventHandler('mythic_hospital:server:RPRequestBed', function(plyCoords)
                 TriggerClientEvent('mythic_hospital:client:RPSendToBed', source, k, v)
                 return
             else
-                TriggerEvent('mythic_chat:server:System', source, 'That Bed Is Taken')
+                TriggerEvent('chatMessage', '', { 0, 0, 0 }, 'NThat Bed Is Taken')
             end
         end
     end
 
     if not foundbed then
-        TriggerEvent('mythic_chat:server:System', source, 'Not Near A Hospital Bed')
+        TriggerEvent('chatMessage', '', { 0, 0, 0 }, 'Not Near A Hospital Bed')
     end
 end)
 
 RegisterServerEvent('mythic_hospital:server:EnteredBed')
 AddEventHandler('mythic_hospital:server:EnteredBed', function()
     local src = source
-    local injuries = GetCharsInjuries(src)
+    local totalBill = CalculateBill(GetCharsInjuries(src), Config.InjuryBase)
 
-    local totalBill = injuryBasePrice
-
-    if injuries ~= nil then
-        for k, v in pairs(injuries.limbs) do
-            if v.isDamaged then
-                totalBill = totalBill + (injuryBasePrice * v.severity)
-            end
-        end
-
-        if injuries.isBleeding > 0 then
-            totalBill = totalBill + (injuryBasePrice * injuries.isBleeding)
-        end
-    end
-
+    
     -- YOU NEED TO IMPLEMENT YOUR FRAMEWORKS BILLING HERE
-    TriggerClientEvent('mythic_hospital:client:FinishServices', src)
+    TriggerClientEvent('mythic_notify:client:SendAlert', src, { text = 'You\'ve Been Treated & Billed', type = 'inform', style = { ['background-color'] = '#760036' }})
+    TriggerClientEvent('mythic_hospital:client:FinishServices', src, false, true)
 end)
 
 RegisterServerEvent('mythic_hospital:server:LeaveBed')

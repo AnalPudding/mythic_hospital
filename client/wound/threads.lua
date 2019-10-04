@@ -1,4 +1,5 @@
 Citizen.CreateThread(function()
+<<<<<<< Updated upstream
     if Config.Debug then
         while true do
             local limbs = ''
@@ -26,6 +27,8 @@ Citizen.CreateThread(function()
 end)
 
 Citizen.CreateThread(function()
+=======
+>>>>>>> Stashed changes
 	while true do
 		if #injured > 0 then
 			local level = 0
@@ -66,7 +69,11 @@ Citizen.CreateThread(function()
 
                         if fadeOutTimer + 1 == Config.FadeOutTimer then
                             if blackoutTimer + 1 == Config.BlackoutTimer then
+<<<<<<< Updated upstream
                                 exports['mythic_notify']:DoCustomHudText('inform', 'You Suddenly Black Out', 5000)
+=======
+                                exports['mythic_notify']:SendAlert('inform', 'You Suddenly Black Out', 5000)
+>>>>>>> Stashed changes
                                 SetFlash(0, 0, 100, 7000, 100)
 
                                 DoScreenFadeOut(500)

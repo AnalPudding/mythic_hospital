@@ -6,6 +6,10 @@ bedOccupying = nil
 bedObject = nil
 bedOccupyingData = nil
 currentTp = nil
+<<<<<<< Updated upstream
+=======
+usedHiddenRev = false
+>>>>>>> Stashed changes
 
 -- Wound
 isBleeding = 0

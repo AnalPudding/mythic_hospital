@@ -6,11 +6,21 @@ version '2.0.0'
 
 client_scripts {
 	-- Config Files
+<<<<<<< Updated upstream
 	'definitions.lua',
 	'config.lua',
 	
 	'client/shared/defines.lua',
 	'client/shared/functions.lua',
+=======
+	'config.lua',
+	'definitions.lua',
+	'functional_config.lua',
+	
+	'client/shared/defines.lua',
+	'client/shared/functions.lua',
+	'client/shared/threads.lua',
+>>>>>>> Stashed changes
 
 	-- Wound Files
 	'client/wound/defines.lua',
@@ -19,18 +29,34 @@ client_scripts {
 	'client/wound/threads.lua',
 
 	-- Hospital Files
+<<<<<<< Updated upstream
 	'client/hospital/defines.lua',
 	'client/hospital/functions.lua',
 	'client/hospital/teleports.lua',
 	'client/hospital/events.lua',
 	'client/hospital/threads.lua',
+=======
+	'client/hospital/shared/events.lua',
+	'client/hospital/hospital/functions.lua',
+	'client/hospital/hospital/teleports.lua',
+	'client/hospital/hospital/events.lua',
+	'client/hospital/hospital/threads.lua',
+	'client/hospital/hidden/events.lua',
+	'client/hospital/hidden/threads.lua',
+>>>>>>> Stashed changes
 	
 	'client/items.lua',
 }
 
 server_scripts {
+	'config.lua',
 	'server/wound.lua',
-	'server/main.lua',
+
+	'server/hospital/shared/defines.lua',
+	'server/hospital/shared/functions.lua',
+	'server/hospital/hospital/events.lua',
+	'server/hospital/hidden/events.lua',
+	'server/hospital/hidden/threads.lua',
 }
 
 dependencies {
@@ -40,8 +66,6 @@ dependencies {
 
 exports {
     'IsInjuredOrBleeding',
-	'DoLimbAlert',
-	'DoBleedAlert',
 }
 
 server_exports {
