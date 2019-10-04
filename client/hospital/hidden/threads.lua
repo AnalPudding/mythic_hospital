@@ -9,7 +9,7 @@ Citizen.CreateThread(function()
     
                 if not IsPedInAnyVehicle(PlayerPedId(), true) then
                     if distance < 3 then
-                        Print3DText(Config.Hospital.Location, 'Press ~r~[E] ~s~To Revive')
+                        Print3DText(Config.Hidden.Location, 'Press ~r~[E] ~s~To Revive')
                         if IsControlJustReleased(0, 54) then
                             if not usedHiddenRev then
                                 if (GetEntityHealth(PlayerPedId()) < 200) or (IsInjuredOrBleeding()) then

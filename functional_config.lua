@@ -5,6 +5,9 @@
 Config.HealthDamage = 10
 Config.ArmorDamage = 5
 
+Config.MaxInjuryChanceMulti = 3
+Config.ForceInjury = 45
+
 --[[
     AIHealTimer : How long it will take to be healed after checking in, in seconds
 ]]

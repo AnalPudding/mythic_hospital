@@ -37,8 +37,6 @@ function DrawUIText(font, centre, x, y, scale, r, g, b, a, text)
     SetTextEntry("STRING")
     AddTextComponentString(text)
     DrawText(x , y) 
-<<<<<<< Updated upstream
-=======
 end
 
 function CreateBlip(blipData)
@@ -50,5 +48,4 @@ function CreateBlip(blipData)
     BeginTextCommandSetBlipName("STRING")
     AddTextComponentString(blipData.name)
     EndTextCommandSetBlipName(blipData.blip)
->>>>>>> Stashed changes
 end

@@ -35,6 +35,14 @@ end
 
 function ResetAll()
     isBleeding = 0
+    bleedTickTimer = 0
+    advanceBleedTimer = 0
+    fadeOutTimer = 0
+    blackoutTimer = 0
+    onDrugs = 0
+    wasOnDrugs = false
+    onPainKiller = 0
+    wasOnPainKillers = false
     injured = {}
 
     for k, v in pairs(BodyParts) do
@@ -253,11 +261,7 @@ end
 function ApplyImmediateEffects(ped, bone, weapon, damageDone)
     local armor = GetPedArmour(ped)
 
-<<<<<<< Updated upstream
-    if Config.MinorInjurWeapons[weapon] then
-=======
     if Config.MinorInjurWeapons[weapon] and damageDone < Config.DamageMinorToMajor then
->>>>>>> Stashed changes
         if Config.CriticalAreas[Config.Bones[bone]] then
             if armor <= 0 then
                 ApplyBleed(1)
@@ -269,11 +273,7 @@ function ApplyImmediateEffects(ped, bone, weapon, damageDone)
                 SetPedToRagdoll(ped, 1500, 2000, 3, true, true, false)
             end
         end
-<<<<<<< Updated upstream
-    elseif Config.MajorInjurWeapons[weapon] then
-=======
     elseif Config.MajorInjurWeapons[weapon] or (Config.MinorInjurWeapons[weapon] and damageDone >= Config.DamageMinorToMajor) then
->>>>>>> Stashed changes
         if Config.CriticalAreas[Config.Bones[bone]] ~= nil then
             if armor > 0 and Config.CriticalAreas[Config.Bones[bone]].armored then
                 if isBleeding < 1 then

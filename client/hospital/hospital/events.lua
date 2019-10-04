@@ -1,3 +1,8 @@
+RegisterNetEvent('mythic_hospital:client:Kill')
+AddEventHandler('mythic_hospital:client:Kill', function()
+    ApplyDamageToPed(PlayerPedId(), 101, false)
+end)
+
 RegisterNetEvent('mythic_hospital:client:RPCheckPos')
 AddEventHandler('mythic_hospital:client:RPCheckPos', function()
     TriggerServerEvent('mythic_hospital:server:RPRequestBed', GetEntityCoords(PlayerPedId()))

@@ -3,7 +3,7 @@ Citizen.CreateThread(function()
         for k, v in pairs(RecentlyUsedHidden) do
             local now = os.time()
 
-            if v >= now then
+            if v <= now then
                 TriggerClientEvent('mythic_hospital:client:HiddenSetup', k)
                 RecentlyUsedHidden[k] = nil
             end
