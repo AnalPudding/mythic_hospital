@@ -6,6 +6,18 @@ Citizen.CreateThread(function()
     if Config.Hidden.ShowBlip then
         CreateBlip(Config.Hidden.Blip)
     end
+
+    while true do
+        if Config.MaxHp > 100 then
+            SetEntityMaxHealth(PlayerPedId(), Config.MaxHp)
+        end
+
+        if Config.RegenRate >= 0 then
+            SetPlayerHealthRechargeMultiplier(PlayerId(), Config.RegenRate)
+        end
+        
+        Citizen.Wait(10000)
+    end
 end)
 
 Citizen.CreateThread(function()

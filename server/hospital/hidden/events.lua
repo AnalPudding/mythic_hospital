@@ -4,8 +4,6 @@ AddEventHandler('mythic_hospital:server:AttemptHiddenRevive', function()
     math.randomseed(os.time())
     local luck = math.random(100) < Config.HiddenRevChance
 
-    print(luck)
-
     local totalBill = CalculateBill(GetCharsInjuries(src), Config.HiddenInjuryBase)
     
     if BillPlayer(src, totalBill) then

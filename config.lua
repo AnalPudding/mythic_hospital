@@ -12,7 +12,7 @@ Config.Keys.Revive = 54 -- Key Used To Revive Or Teleport
     RegenRate : 
 ]]
 Config.MaxHp = 200
-Config.RegenRate = 0
+Config.RegenRate = 0.0
 
 --[[
     HiddenRevChance : The % Chance That Using The Hidden Revive Spot Will Result In A Full Revive With All Limb Damage & Bleeds Removed
