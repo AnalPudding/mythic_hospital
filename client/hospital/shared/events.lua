@@ -13,14 +13,14 @@ AddEventHandler('mythic_hospital:client:FinishServices', function(h, wasLucky)
         SetEntityHealth(player, GetEntityMaxHealth(player))
         ClearPedBloodDamage(player)
         SetPlayerSprint(PlayerId(), true)
-        TriggerEvent('mythic_hospital:client:RemoveBleed')
-        TriggerEvent('mythic_hospital:client:ResetLimbs')
+        ResetAll()
     else
-
+        SetEntityHealth(player, 110)
     end
 
     if h then
         usedHiddenRev = true
+        DoScreenFadeIn(1000)
     else
         LeaveBed()
     end

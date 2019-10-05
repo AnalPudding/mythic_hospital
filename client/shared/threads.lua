@@ -8,14 +8,18 @@ Citizen.CreateThread(function()
     end
 
     while true do
-        if Config.MaxHp > 100 then
+        if (Config.MaxHp - 100) > 0 and Config.MaxHp <= 200 then
             SetEntityMaxHealth(PlayerPedId(), Config.MaxHp)
+        else
+            SetEntityMaxHealth(PlayerPedId(), 200)
         end
 
-        if Config.RegenRate >= 0 then
+        if Config.RegenRate >= 0 and Config.RegenRate <= 1.0 then
             SetPlayerHealthRechargeMultiplier(PlayerId(), Config.RegenRate)
+        else
+            SetPlayerHealthRechargeMultiplier(PlayerId(), 0.0)
         end
-        
+
         Citizen.Wait(10000)
     end
 end)

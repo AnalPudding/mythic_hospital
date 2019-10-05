@@ -32,6 +32,12 @@ Citizen.CreateThread(function()
                                         isInHospitalBed = true
                                     end, function(status)
                                         if not status then
+                                            DoScreenFadeOut(1000)
+
+                                            while not IsScreenFadedOut() do
+                                                Citizen.Wait(10)
+                                            end
+
                                             TriggerServerEvent('mythic_hospital:server:AttemptHiddenRevive')
                                         end
                                     end)

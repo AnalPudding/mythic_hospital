@@ -147,7 +147,7 @@ Citizen.CreateThread(function()
                         if checkDamage then
     
                             if IsDamagingEvent(damageDone, weapon) then
-                                CheckDamage(ped, bone, weapon, damgeDone)
+                                CheckDamage(ped, bone, weapon, damageDone)
                             else
                                 print('damn fool, you lucky')
                             end

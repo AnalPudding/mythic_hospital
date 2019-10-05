@@ -9,6 +9,7 @@ Config.Keys.Revive = 54 -- Key Used To Revive Or Teleport
 --[[
     GENERAL SETTINGS | THESE WILL AFFECT YOUR ENTIRE SERVER SO BE SURE TO SET THESE CORRECTLY
     MaxHp : Maximum HP Allowed, set to -1 if you want to disable mythic_hospital from setting this
+        NOTE: Anything under 100 and you are dead
     RegenRate : 
 ]]
 Config.MaxHp = 200

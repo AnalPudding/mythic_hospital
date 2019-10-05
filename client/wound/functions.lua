@@ -3,7 +3,6 @@ function IsDamagingEvent(damageDone, weapon)
     local luck = math.random(100)
     local multi = damageDone / Config.HealthDamage
 
-    print(luck, damageDone, multi, damageDone / Config.HealthDamage, Config.HealthDamage * multi, (damgeDone >= Config.ForceInjury or multi > Config.MaxInjuryChanceMulti))
     return luck < (Config.HealthDamage * multi) or (damageDone >= Config.ForceInjury or multi > Config.MaxInjuryChanceMulti or Config.ForceInjuryWeapons[weapon])
 end
 
