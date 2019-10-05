@@ -14,7 +14,7 @@ Citizen.CreateThread(function()
                     --Print3DText(Config.Hospital.Location, Config.Strings.HospitalCheckIn)
                     if IsControlJustReleased(0, Config.Keys.Revive) then
                         if IsEntityDead(PlayerPedId()) then
-                            exports['mythic_base']:FetchComponent('Progress'):ProgressWithStartEvent({
+                            exports['mythic_progbar']:ProgressWithStartEvent({
                                 name = "hospital_action",
                                 duration = 2500,
                                 label = Config.Strings.HospitalCheckInAction,
@@ -37,7 +37,7 @@ Citizen.CreateThread(function()
                             end)
                         else
                             if (GetEntityHealth(PlayerPedId()) < 200) or (IsInjuredOrBleeding()) then
-                                exports['mythic_base']:FetchComponent('Progress'):ProgressWithStartEvent({
+                                exports['mythic_progbar']:ProgressWithStartEvent({
                                     name = "hospital_action",
                                     duration = 2500,
                                     label = Config.Strings.HospitalCheckInAction,

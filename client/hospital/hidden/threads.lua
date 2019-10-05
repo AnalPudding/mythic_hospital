@@ -16,7 +16,7 @@ Citizen.CreateThread(function()
                         if IsControlJustReleased(0, Config.Keys.Revive) then
                             if not usedHiddenRev then
                                 if (GetEntityHealth(PlayerPedId()) < 200) or (IsInjuredOrBleeding()) then
-                                    exports['mythic_base']:FetchComponent('Progress'):ProgressWithStartEvent({
+                                    exports['mythic_progbar']:ProgressWithStartEvent({
                                         name = "hidden_hospital_action",
                                         duration = 1500,
                                         label = Config.Strings.HiddenCheckInAction,

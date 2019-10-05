@@ -7,12 +7,16 @@ AddEventHandler('mythic_hospital:server:AttemptHiddenRevive', function()
     print(luck)
 
     local totalBill = CalculateBill(GetCharsInjuries(src), Config.HiddenInjuryBase)
-    -- YOU NEED TO IMPLEMENT YOUR FRAMEWORKS BILLING HERE
-
-    if luck then
-        TriggerClientEvent('mythic_notify:client:SendAlert', src, { text = 'You\'ve Been Treated & Billed', type = 'inform', style = { ['background-color'] = '#760036' }})
+    
+    if BillPlayer(src, totalBill) then
+        if luck then
+            TriggerClientEvent('mythic_notify:client:SendAlert', src, { text = 'You\'ve Been Treated & Billed', type = 'inform', style = { ['background-color'] = '#760036' }})
+        else
+            TriggerClientEvent('mythic_notify:client:SendAlert', src, { text = 'You were revived, but there were some complications', type = 'inform', length = 10000, style = { ['background-color'] = '#760036' }})
+        end
     else
-        TriggerClientEvent('mythic_notify:client:SendAlert', src, { text = 'You were revived, but there were some complications', type = 'inform', length = 10000, style = { ['background-color'] = '#760036' }})
+        luck = false
+        TriggerClientEvent('mythic_notify:client:SendAlert', src, { text = 'You were revived, but did not have the funds to cover further medical services', type = 'inform', style = { ['background-color'] = '#760036' }})
     end
 
     RecentlyUsedHidden[source] = os.time() + 180000

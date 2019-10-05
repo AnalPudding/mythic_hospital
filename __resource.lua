@@ -37,6 +37,7 @@ client_scripts {
 server_scripts {
 	'strings.lua',
 	'config.lua',
+	'server/billing.lua',
 	'server/wound.lua',
 
 	'server/hospital/shared/defines.lua',

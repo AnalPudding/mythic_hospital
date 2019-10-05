@@ -125,7 +125,7 @@ AddEventHandler('mythic_hospital:client:UseAdrenaline', function(tier)
 end)
 
 --[[ Player Died Events ]]--
-RegisterNetEvent('baseevents:onPlayerKilled')
+--[[RegisterNetEvent('baseevents:onPlayerKilled')
 AddEventHandler('baseevents:onPlayerKilled', function(killedBy, data)
     ResetAll()
 end)
@@ -133,4 +133,4 @@ end)
 RegisterNetEvent('baseevents:onPlayerDied')
 AddEventHandler('baseevents:onPlayerDied', function(killedBy, pos)
     ResetAll()
-end)
+end)]]

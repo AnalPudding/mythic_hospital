@@ -63,9 +63,13 @@ AddEventHandler('mythic_hospital:server:EnteredBed', function()
     local totalBill = CalculateBill(GetCharsInjuries(src), Config.InjuryBase)
 
     
-    -- YOU NEED TO IMPLEMENT YOUR FRAMEWORKS BILLING HERE
-    TriggerClientEvent('mythic_notify:client:SendAlert', src, { text = 'You\'ve Been Treated & Billed', type = 'inform', style = { ['background-color'] = '#760036' }})
-    TriggerClientEvent('mythic_hospital:client:FinishServices', src, false, true)
+    if BillPlayer(src, totalBill) then
+        TriggerClientEvent('mythic_notify:client:SendAlert', src, { text = 'You\'ve Been Treated & Billed', type = 'inform', style = { ['background-color'] = '#760036' }})
+        TriggerClientEvent('mythic_hospital:client:FinishServices', src, false, true)
+    else
+        TriggerClientEvent('mythic_notify:client:SendAlert', src, { text = 'You were revived, but did not have the funds to cover further medical services', type = 'inform', style = { ['background-color'] = '#760036' }})
+        TriggerClientEvent('mythic_hospital:client:FinishServices', src, false, false)
+    end
 end)
 
 RegisterServerEvent('mythic_hospital:server:LeaveBed')
