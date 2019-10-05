@@ -1,3 +1,12 @@
+function IsDamagingEvent(damageDone, weapon)
+    math.randomseed(GetGameTimer())
+    local luck = math.random(100)
+    local multi = damageDone / Config.HealthDamage
+
+    print(luck, damageDone, multi, damageDone / Config.HealthDamage, Config.HealthDamage * multi, (damgeDone >= Config.ForceInjury or multi > Config.MaxInjuryChanceMulti))
+    return luck < (Config.HealthDamage * multi) or (damageDone >= Config.ForceInjury or multi > Config.MaxInjuryChanceMulti or Config.ForceInjuryWeapons[weapon])
+end
+
 function IsInjuryCausingLimp()
     for k, v in pairs(BodyParts) do
         if v.causeLimp and v.isDamaged then
@@ -78,7 +87,7 @@ function ProcessRunStuff(ped)
         if wasOnPainKillers then
             SetPedToRagdoll(ped, 1500, 2000, 3, true, true, false)
             wasOnPainKillers = false
-            exports['mythic_notify']:SendAlert('inform', 'You\'ve Realized Doing Drugs Does Not Fix All Your Problems', 5000, { ['background-color'] = '#760036' })
+            exports['mythic_notify']:SendAlert('inform', Config.Strings.PainKillersExpired, 5000, { ['background-color'] = '#760036' })
         end
     else
         SetPedMoveRateOverride(ped, 1.0)
@@ -101,13 +110,13 @@ function ProcessDamage(ped)
                         local chance = math.random(100)
                         if (IsPedRunning(ped) or IsPedSprinting(ped)) then
                             if chance <= Config.LegInjuryChance.Running then
-                                exports['mythic_notify']:SendAlert('inform', 'You\'re Having A Hard Time Running', 5000, { ['background-color'] = '#760036' })
+                                exports['mythic_notify']:SendAlert('inform', Config.Strings.InjurNoRun, 5000, { ['background-color'] = '#760036' })
                                 ShakeGameplayCam('SMALL_EXPLOSION_SHAKE', 0.08) -- change this float to increase/decrease camera shake
                                 SetPedToRagdollWithFall(ped, 1500, 2000, 1, GetEntityForwardVector(ped), 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
                             end
                         else
                             if chance <= Config.LegInjuryChance.Walking then
-                                exports['mythic_notify']:SendAlert('inform', 'You\'re Having A Hard Using Your Legs', 5000, { ['background-color'] = '#760036' })
+                                exports['mythic_notify']:SendAlert('inform', Config.Strings.InjurStumble, 5000, { ['background-color'] = '#760036' })
                                 ShakeGameplayCam('SMALL_EXPLOSION_SHAKE', 0.08) -- change this float to increase/decrease camera shake
                                 SetPedToRagdollWithFall(ped, 1500, 2000, 1, GetEntityForwardVector(ped), 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
                             end
@@ -164,7 +173,7 @@ function ProcessDamage(ped)
                     local chance = math.random(100)
 
                     if chance <= Config.HeadInjuryChance then
-                        exports['mythic_notify']:SendAlert('inform', 'You Suddenly Black Out', 5000, { ['background-color'] = '#760036' })
+                        exports['mythic_notify']:SendAlert('inform', Config.Strings.Blackout, 5000, { ['background-color'] = '#760036' })
                         SetFlash(0, 0, 100, 10000, 100)
 
                         DoScreenFadeOut(100)
@@ -190,7 +199,7 @@ function ProcessDamage(ped)
         if wasOnDrugs then
             SetPedToRagdoll(ped, 1500, 2000, 3, true, true, false)
             wasOnDrugs = false
-            exports['mythic_notify']:SendAlert('inform', 'You\'ve Realized Doing Drugs Does Not Fix All Your Problems', 5000, { ['background-color'] = '#760036' })
+            exports['mythic_notify']:SendAlert('inform', Config.Strings.AdrenalineExpired, 5000, { ['background-color'] = '#760036' })
         end
     else
         onDrugs = onDrugs - 1
@@ -202,11 +211,12 @@ function ProcessDamage(ped)
 end
 
 function DebugAlerts(ped, bone, weapon, damageDone)
+    print(weapon)
     exports['mythic_notify']:SendAlert('inform', 'Bone: ' .. Config.Bones[bone], 10000, { ['background-color'] = '#1e1e1e' })
     if (Config.MinorInjurWeapons[weapon] ~= nil) then
-        exports['mythic_notify']:SendAlert('inform', 'Minor Weapon', 10000, { ['background-color'] = '#1e1e1e' })
+        exports['mythic_notify']:SendAlert('inform', 'Minor Weapon : ' .. weapon, 10000, { ['background-color'] = '#1e1e1e' })
     else
-        exports['mythic_notify']:SendAlert('inform', 'Major Weapon', 10000, { ['background-color'] = '#1e1e1e' })
+        exports['mythic_notify']:SendAlert('inform', 'Major Weapon : ' .. weapon, 10000, { ['background-color'] = '#1e1e1e' })
     end
     exports['mythic_notify']:SendAlert('inform', 'Crit Area: ' .. tostring(Config.CriticalAreas[Config.Bones[bone]] ~= nil), 10000, { ['background-color'] = '#1e1e1e' })
     exports['mythic_notify']:SendAlert('inform', 'Stagger Area: ' .. tostring(Config.StaggerAreas[Config.Bones[bone]] ~= nil and (Config.StaggerAreas[Config.Bones[bone]].armored or GetPedArmour(ped   ) <= 0)), 10000, { ['background-color'] = '#1e1e1e' })
@@ -276,25 +286,19 @@ function ApplyImmediateEffects(ped, bone, weapon, damageDone)
     elseif Config.MajorInjurWeapons[weapon] or (Config.MinorInjurWeapons[weapon] and damageDone >= Config.DamageMinorToMajor) then
         if Config.CriticalAreas[Config.Bones[bone]] ~= nil then
             if armor > 0 and Config.CriticalAreas[Config.Bones[bone]].armored then
-                if isBleeding < 1 then
-                    if math.random(100) <= math.ceil(Config.MajorArmoredBleedChance) then
-                        ApplyBleed(1)
-                    end
-                end
-            else
-                ApplyBleed(2)
-            end
-        else
-            if armor > 0 then
-                if math.random(100) < (Config.MajorArmoredBleedChance / 2) then
-                    ApplyBleed(2)
-                else
+                if math.random(100) <= math.ceil(Config.MajorArmoredBleedChance) then
                     ApplyBleed(1)
                 end
             else
-                if math.random(100) < (Config.MajorDoubleBleed) then
-                    ApplyBleed(2)
-                else
+                ApplyBleed(1)
+            end
+        else
+            if armor > 0 then
+                if math.random(100) < (Config.MajorArmoredBleedChance) then
+                    ApplyBleed(1)
+                end
+            else
+                if math.random(100) < (Config.MajorArmoredBleedChance * 2) then
                     ApplyBleed(1)
                 end
             end
@@ -325,17 +329,15 @@ function DoLimbAlert()
     if not IsEntityDead(player) then
         if #injured > 0 then
             local limbDamageMsg = ''
-            if #injured > 1 and #injured < 3 then
+            if #injured <= Config.AlertShowInfo then
                 for k, v in pairs(injured) do
-                    limbDamageMsg = limbDamageMsg .. 'Your ' .. v.label .. ' feels ' .. Config.WoundStates[v.severity]
+                    limbDamageMsg = string.format(Config.Strings.LimbAlert, v.label, Config.WoundStates[v.severity])
                     if k < #injured then
-                        limbDamageMsg = limbDamageMsg .. ' | '
+                        limbDamageMsg = limbDamageMsg .. Config.Strings.LimbAlertSeperator
                     end
                 end
-            elseif #injured > 2 then
-                limbDamageMsg = 'You Feel Multiple Pains'
             else
-                limbDamageMsg = 'Your ' .. injured[1].label .. ' feels ' .. Config.WoundStates[injured[1].severity]
+                limbDamageMsg = Config.Strings.LimbAlertMultiple
             end
 
             exports['mythic_notify']:PersistentAlert('start', limbNotifId, 'inform', limbDamageMsg, { ['background-color'] = '#760036' })
@@ -350,7 +352,7 @@ end
 function DoBleedAlert()
     local player = PlayerPedId()
     if not IsEntityDead(player) and isBleeding > 0 then
-        exports['mythic_notify']:PersistentAlert('start', bleedNotifId, 'inform', 'You Have ' .. Config.BleedingStates[isBleeding], { ['background-color'] = '#760036' })
+        exports['mythic_notify']:PersistentAlert('start', bleedNotifId, 'inform', string.format(Config.Strings.BleedAlert, Config.BleedingStates[isBleeding]), { ['background-color'] = '#760036' })
     else
         exports['mythic_notify']:PersistentAlert('end', bleedNotifId)
     end

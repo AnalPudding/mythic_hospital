@@ -9,6 +9,12 @@ function SetBedCam()
     isInHospitalBed = true
     local player = PlayerPedId()
 
+    DoScreenFadeOut(1000)
+
+    while not IsScreenFadedOut() do
+        Citizen.Wait(100)
+    end
+
 	if IsPedDeadOrDying(player) then
 		local playerPos = GetEntityCoords(player, true)
 		NetworkResurrectLocalPlayer(playerPos, true, true, false)
@@ -17,6 +23,9 @@ function SetBedCam()
     bedObject = GetClosestObjectOfType(bedOccupyingData.x, bedOccupyingData.y, bedOccupyingData.z, 1.0, bedOccupyingData.model, false, false, false)
     FreezeEntityPosition(bedObject, true)
     
+
+    DoScreenFadeOut(1) -- Have to do another fadeout ? 0 Idea why...
+
     SetEntityCoords(player, bedOccupyingData.x, bedOccupyingData.y, bedOccupyingData.z)
     SetEntityInvincible(PlayerPedId(), true)
 
@@ -35,6 +44,8 @@ function SetBedCam()
     SetCamFov(cam, 90.0)
     SetCamRot(cam, -90.0, 0.0, GetEntityHeading(player) + 180, true)
 
+    DoScreenFadeIn(1000)
+
     Citizen.Wait(1000)
     FreezeEntityPosition(player, true)
 end
@@ -46,15 +57,24 @@ function LeaveBed()
     while not HasAnimDictLoaded(getOutDict) do
         Citizen.Wait(0)
     end
+
+    DoScreenFadeOut(1000)
+    while not IsScreenFadedOut() do
+        Citizen.Wait(100)
+    end
+
     SetEntityInvincible(player, false)
     SetEntityHeading(player, bedOccupyingData.h - 90)
     TaskPlayAnim(player, getOutDict , getOutAnim, 100.0, 1.0, -1, 8, -1, 0, 0, 0)
-    Citizen.Wait(5000)
+    Citizen.Wait(1000)
+    DoScreenFadeIn(1000)
+    Citizen.Wait(4000)
     ClearPedTasks(player)
     FreezeEntityPosition(player, false)
     TriggerServerEvent('mythic_hospital:server:LeaveBed', bedOccupying)
     FreezeEntityPosition(bedObject, false)
 
+    
     RenderScriptCams(0, true, 200, true, true)
     DestroyCam(cam, false)
 
@@ -91,7 +111,7 @@ function InBedTooltip(scaleform, outside)
     PushScaleformMovieFunction(scaleform, "SET_DATA_SLOT")
     PushScaleformMovieFunctionParameterInt(1)
     Button(GetControlInstructionalButton(1, Config.Keys.GetUp, true))
-    ButtonMessage('Get Up')
+    ButtonMessage(Config.Strings.GetUp)
     PopScaleformMovieFunctionVoid()
 
     PushScaleformMovieFunction(scaleform, "DRAW_INSTRUCTIONAL_BUTTONS")

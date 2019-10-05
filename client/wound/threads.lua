@@ -114,7 +114,6 @@ end)
 
 Citizen.CreateThread(function()
     while true do
-        math.randomseed(GetGameTimer())
         local ped = PlayerPedId()
         local health = GetEntityHealth(ped)
         local armor = GetPedArmour(ped)
@@ -128,32 +127,35 @@ Citizen.CreateThread(function()
         end
 
         local armorDamaged = (playerArmor ~= armor and armor < (playerArmor - Config.ArmorDamage) and armor > 0) -- Players armor was damaged
-        local healthDamaged = (playerHealth ~= health and health < (playerHealth - Config.HealthDamage)) -- Players health was damaged
+        local healthDamaged = (playerHealth ~= health) -- Players health was damaged
+
+        local damageDone = (playerHealth - health)
 
         if armorDamaged or healthDamaged then
             local hit, bone = GetPedLastDamageBone(ped)
             local bodypart = Config.Bones[bone]
+            local weapon = GetDamagingWeapon(ped)
 
             if hit and bodypart ~= 'NONE' then
-                local checkDamage = true
-                local weapon = GetDamagingWeapon(ped)
-                if weapon ~= nil then
-                    if armorDamaged and (bodypart == 'SPINE' or bodypart == 'LOWER_BODY') or weapon == Config.WeaponClasses['NOTHING'] then
-                        checkDamage = false -- Don't check damage if the it was a body shot and the weapon class isn't that strong
-                    end
-
-                    if checkDamage then
-                        local damgeDone = (playerHealth - health)
-                        local multi = (math.floor(damgeDone / Config.HealthDamage))
-                        local luck = math.random(100)
-
-                        print(luck, damgeDone, multi, damgeDone / Config.HealthDamage, Config.HealthDamage * multi)
-
-                        if luck < (Config.HealthDamage * multi) or (damgeDone >= Config.ForceInjury or multi > Config.MaxInjuryChanceMulti) then
-                            CheckDamage(ped, bone, weapon, damgeDone)
-                        else
-                            print('damn fool, you lucky')
+                if damageDone >= Config.HealthDamage then
+                    local checkDamage = true
+                    if weapon ~= nil then
+                        if armorDamaged and (bodypart == 'SPINE' or bodypart == 'UPPER_BODY') or weapon == Config.WeaponClasses['NOTHING'] then
+                            checkDamage = false -- Don't check damage if the it was a body shot and the weapon class isn't that strong
                         end
+    
+                        if checkDamage then
+    
+                            if IsDamagingEvent(damageDone, weapon) then
+                                CheckDamage(ped, bone, weapon, damgeDone)
+                            else
+                                print('damn fool, you lucky')
+                            end
+                        end
+                    end
+                elseif Config.AlwaysBleedChanceWeapons[weapon] then
+                    if math.random(100) < Config.AlwaysBleedChance then
+                        ApplyBleed(1)
                     end
                 end
             end

@@ -6,9 +6,11 @@ version '2.0.0'
 
 client_scripts {
 	-- Config Files
+	'strings.lua',
 	'config.lua',
 	'definitions.lua',
 	'functional_config.lua',
+	'client/scaleform.lua',
 	
 	'client/shared/defines.lua',
 	'client/shared/functions.lua',
@@ -33,6 +35,7 @@ client_scripts {
 }
 
 server_scripts {
+	'strings.lua',
 	'config.lua',
 	'server/wound.lua',
 

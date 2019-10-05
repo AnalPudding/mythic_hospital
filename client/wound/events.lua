@@ -110,7 +110,7 @@ AddEventHandler('mythic_hospital:client:UsePainKiller', function(tier)
         onPainKiller = 90 * tier
     end
 
-    exports['mythic_notify']:SendAlert('inform', 'You feel the pain subside temporarily', 5000)
+    exports['mythic_notify']:SendAlert('inform', Config.Strings.UsePainKillers, 5000)
     ProcessRunStuff(PlayerPedId())
 end)
 
@@ -120,12 +120,12 @@ AddEventHandler('mythic_hospital:client:UseAdrenaline', function(tier)
         onDrugs = 180 * tier
     end
 
-    exports['mythic_notify']:SendAlert('inform', 'You\'re Able To Ignore Your Body Failing', 5000)
+    exports['mythic_notify']:SendAlert('inform', Config.Strings.UseAdrenaline, 5000)
     ProcessRunStuff(PlayerPedId())
 end)
 
 --[[ Player Died Events ]]--
---[[RegisterNetEvent('baseevents:onPlayerKilled')
+RegisterNetEvent('baseevents:onPlayerKilled')
 AddEventHandler('baseevents:onPlayerKilled', function(killedBy, data)
     ResetAll()
 end)
@@ -133,4 +133,4 @@ end)
 RegisterNetEvent('baseevents:onPlayerDied')
 AddEventHandler('baseevents:onPlayerDied', function(killedBy, pos)
     ResetAll()
-end)]]
+end)

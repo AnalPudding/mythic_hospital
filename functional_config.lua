@@ -1,3 +1,5 @@
+Config = Config or {}
+
 --[[
     HealthDamage : How Much Damage To Direct HP Must Be Applied Before Checks For Damage Happens
     ArmorDamage : How Much Damage To Armor Must Be Applied Before Checks For Damage Happens | NOTE: This will in turn make stagger effect with armor happen only after that damage occurs
@@ -5,8 +7,13 @@
 Config.HealthDamage = 10
 Config.ArmorDamage = 5
 
+--[[
+    MaxInjuryChanceMulti : How many times the HealthDamage value above can divide into damage taken before damage is forced to be applied
+    ForceInjury : Maximum amount of damage a player can take before limb damage & effects are forced to occur
+]]
 Config.MaxInjuryChanceMulti = 3
 Config.ForceInjury = 45
+Config.AlwaysBleedChance = 35
 
 --[[
     AIHealTimer : How long it will take to be healed after checking in, in seconds
@@ -25,19 +32,18 @@ Config.BleedTickRate = 30
 Config.BleedMovementTick = 10
 Config.BleedMovementAdvance = 3
 
---[[ 
+--[[
+    The Base Damage That Is Multiplied By Bleed Level Every Time A Bleed Tick Occurs
+]]
+Config.BleedTickDamage = 2
+
+--[[
     FadeOutTimer : How many bleed ticks occur before fadeout happens
-]]
-Config.FadeOutTimer = 2
-
---[[
     BlackoutTimer : How many bleed ticks occur before blacking out
-]]
-Config.BlackoutTimer = 10
-
---[[
     AdvanceBleedTimer : How many bleed ticks occur before bleed level increases
 ]]
+Config.FadeOutTimer = 2
+Config.BlackoutTimer = 10
 Config.AdvanceBleedTimer = 10
 
 --[[
@@ -60,16 +66,10 @@ Config.LegInjuryChance = {
 }
 
 --[[
-    The Base Damage That Is Multiplied By Bleed Level Every Time A Bleed Tick Occurs
-]]
-Config.BleedTickDamage = 2
-
---[[
     MajorArmoredBleedChance : The % Chance Someone Gets A Bleed Effect Applied When Taking Major Damage With Armor
     MajorDoubleBleed : % Chance You Have To Receive Double Bleed Effect From Major Damage, This % is halved if the player has armor
 ]]
 Config.MajorArmoredBleedChance = 45
-Config.MajorDoubleBleed = 15
 
 --[[
     DamgeMinorToMajor : How much damage would have to be applied for a minor weapon to be considered a major damage event. Put this at 100 if you want to disable it
@@ -82,6 +82,7 @@ Config.DamageMinorToMajor = 45
 
     MinorInjurWeapons : Damage From These Weapons Will Apply Only Minor Injuries
     MajorInjurWeapons : Damage From These Weapons Will Apply Only Major Injuries
+    AlwaysBleedChanceWeapons : Weapons that're in the included weapon classes will roll for a chance to apply a bleed effect if the damage wasn't enough to trigger an injury chance
     CriticalAreas : 
     StaggerAreas : These are the body areas that would cause a stagger is hit by firearms,
         Table Values: Armored = Can This Cause Stagger If Wearing Armor, Major = % Chance You Get Staggered By Major Damage, Minor = % Chance You Get Staggered By Minor Damage
@@ -100,6 +101,19 @@ Config.MajorInjurWeapons = {
     [Config.WeaponClasses['HIGH_CALIBER']] = true,
     [Config.WeaponClasses['HEAVY_IMPACT']] = true,
     [Config.WeaponClasses['SHOTGUN']] = true,
+    [Config.WeaponClasses['EXPLOSIVE']] = true,
+}
+
+Config.AlwaysBleedChanceWeapons = {
+    [Config.WeaponClasses['SMALL_CALIBER']] = true,
+    [Config.WeaponClasses['MEDIUM_CALIBER']] = true,
+    [Config.WeaponClasses['CUTTING']] = true,
+    [Config.WeaponClasses['WILDLIFE']] = true,
+}
+
+Config.ForceInjuryWeapons = {
+    [Config.WeaponClasses['HIGH_CALIBER']] = true,
+    [Config.WeaponClasses['HEAVY_IMPACT']] = true,
     [Config.WeaponClasses['EXPLOSIVE']] = true,
 }
 

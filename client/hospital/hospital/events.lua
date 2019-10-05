@@ -38,7 +38,7 @@ AddEventHandler('mythic_hospital:client:SendToBed', function(id, data)
         Citizen.Wait(5)
         local player = PlayerPedId()
 
-        exports['mythic_notify']:SendAlert('inform', 'Doctors Are Treating You')
+        exports['mythic_notify']:SendAlert('inform', Config.Strings.BeingTreated)
         Citizen.Wait(Config.AIHealTimer * 1000)
         TriggerServerEvent('mythic_hospital:server:EnteredBed')
     end)

@@ -1,3 +1,5 @@
+Config = Config or {}
+
 Config.WeaponClasses = {
     ['SMALL_CALIBER'] = 1,
     ['MEDIUM_CALIBER'] = 2,

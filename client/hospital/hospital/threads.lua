@@ -1,4 +1,6 @@
 Citizen.CreateThread(function()
+    local s = Scaleform.Request("MIDSIZED_MESSAGE")
+    s:CallFunction("SHOW_MIDSIZED_MESSAGE", '', Config.Strings.HospitalCheckIn)
     while true do
         Citizen.Wait(1)
         local plyCoords = GetEntityCoords(PlayerPedId(), 0)
@@ -8,13 +10,14 @@ Citizen.CreateThread(function()
 
             if not IsPedInAnyVehicle(PlayerPedId(), true) then
                 if distance < 3 then
-                    Print3DText(Config.Hospital.Location, 'Press ~r~[E] ~s~To Check In')
-                    if IsControlJustReleased(0, 54) then
+                    s:Render3D(Config.Hospital.Location.x, Config.Hospital.Location.y, Config.Hospital.Location.z - 0.5, 0.0, 0.0, -GetGameplayCamRot().z, 3.5, 3.5, 0.0)
+                    --Print3DText(Config.Hospital.Location, Config.Strings.HospitalCheckIn)
+                    if IsControlJustReleased(0, Config.Keys.Revive) then
                         if IsEntityDead(PlayerPedId()) then
-                            exports['mythic_progbar']:ProgressWithStartEvent({
+                            exports['mythic_base']:FetchComponent('Progress'):ProgressWithStartEvent({
                                 name = "hospital_action",
                                 duration = 2500,
-                                label = 'Checking In',
+                                label = Config.Strings.HospitalCheckInAction,
                                 useWhileDead = true,
                                 canCancel = true,
                                 controlDisables = {
@@ -34,10 +37,10 @@ Citizen.CreateThread(function()
                             end)
                         else
                             if (GetEntityHealth(PlayerPedId()) < 200) or (IsInjuredOrBleeding()) then
-                                exports['mythic_progbar']:ProgressWithStartEvent({
+                                exports['mythic_base']:FetchComponent('Progress'):ProgressWithStartEvent({
                                     name = "hospital_action",
                                     duration = 2500,
-                                    label = 'Checking In',
+                                    label = Config.Strings.HospitalCheckInAction,
                                     useWhileDead = true,
                                     canCancel = true,
                                     controlDisables = {
@@ -77,7 +80,7 @@ Citizen.CreateThread(function()
                                     end
                                 end)
                             else
-                                exports['mythic_notify']:SendAlert('error', 'You do not need medical attention')
+                                exports['mythic_notify']:SendAlert('error', Config.Strings.NotHurt)
                             end
                         end
                     end
@@ -91,30 +94,34 @@ end)
 
 Citizen.CreateThread(function()
     while true do
-        local short, dist = IsNearTeleport()
-        if dist ~= nil and currentTp ~= nil then
-            local player = PlayerPedId()
-            if IsControlJustReleased(1,51) then
-                if not IsPedInAnyVehicle(player, true) then
-                    DoScreenFadeOut(500)
-                    while not IsScreenFadedOut() do
-                        Citizen.Wait(10)
+        if not IsEntityDead(PlayerPedId()) then
+            local short, dist = IsNearTeleport()
+            if dist ~= nil and currentTp ~= nil then
+                local player = PlayerPedId()
+                if IsControlJustReleased(0, Config.Keys.Revive) then
+                    if not IsPedInAnyVehicle(player, true) then
+                        DoScreenFadeOut(500)
+                        while not IsScreenFadedOut() do
+                            Citizen.Wait(10)
+                        end
+                
+                        SetEntityCoords(player, Config.Teleports[currentTp.destination].x, Config.Teleports[currentTp.destination].y, Config.Teleports[currentTp.destination].z, 0, 0, 0, false)
+                        SetEntityHeading(player, Config.Teleports[currentTp.destination].h)
+                
+                        Citizen.Wait(100)
+                
+                        DoScreenFadeIn(1000)
                     end
-            
-                    SetEntityCoords(player, pillboxTeleports[currentTp.destination].x, pillboxTeleports[currentTp.destination].y, pillboxTeleports[currentTp.destination].z, 0, 0, 0, false)
-                    SetEntityHeading(player, pillboxTeleports[currentTp.destination].h)
-            
-                    Citizen.Wait(100)
-            
-                    DoScreenFadeIn(1000)
                 end
-            end
 
-            Citizen.Wait(1)
-        elseif short < 25 then
-            Citizen.Wait(5)
+                Citizen.Wait(1)
+            elseif short < 25 then
+                Citizen.Wait(5)
+            else
+                Citizen.Wait(30 * short)
+            end
         else
-            Citizen.Wait(30 * short)
+            Citizen.Wait(1000)
         end
     end
 end)

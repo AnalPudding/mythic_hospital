@@ -1,4 +1,6 @@
 Citizen.CreateThread(function()
+    local s = Scaleform.Request("MIDSIZED_MESSAGE")
+    s:CallFunction("SHOW_MIDSIZED_MESSAGE", '', Config.Strings.HospitalCheckIn)
     while true do
         if IsEntityDead(PlayerPedId()) then
             Citizen.Wait(1)
@@ -9,14 +11,15 @@ Citizen.CreateThread(function()
     
                 if not IsPedInAnyVehicle(PlayerPedId(), true) then
                     if distance < 3 then
-                        Print3DText(Config.Hidden.Location, 'Press ~r~[E] ~s~To Revive')
-                        if IsControlJustReleased(0, 54) then
+                        s:Render3D(Config.Hospital.Location.x, Config.Hospital.Location.y, Config.Hospital.Location.z - 0.5, 0.0, 0.0, -GetGameplayCamRot().z, 3.5, 3.5, 0.0)
+                        --Print3DText(Config.Hidden.Location, Config.Strings.HiddenCheckIn)
+                        if IsControlJustReleased(0, Config.Keys.Revive) then
                             if not usedHiddenRev then
                                 if (GetEntityHealth(PlayerPedId()) < 200) or (IsInjuredOrBleeding()) then
-                                    exports['mythic_progbar']:ProgressWithStartEvent({
+                                    exports['mythic_base']:FetchComponent('Progress'):ProgressWithStartEvent({
                                         name = "hidden_hospital_action",
                                         duration = 1500,
-                                        label = 'Reviving',
+                                        label = Config.Strings.HiddenCheckInAction,
                                         useWhileDead = true,
                                         canCancel = true,
                                         controlDisables = {
@@ -33,10 +36,10 @@ Citizen.CreateThread(function()
                                         end
                                     end)
                                 else
-                                    exports['mythic_notify']:SendAlert('error', 'You do not need medical attention')
+                                    exports['mythic_notify']:SendAlert('error', Config.Strings.NotHurt)
                                 end
                             else
-                                exports['mythic_notify']:SendAlert('error', 'The medic is not here')
+                                exports['mythic_notify']:SendAlert('error', Config.Strings.HiddenCooldown)
                             end
                         end
                     end
