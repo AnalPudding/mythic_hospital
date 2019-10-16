@@ -53,9 +53,10 @@ dependencies {
 }
 
 exports {
-    'IsInjuredOrBleeding',
+	'IsInjuredOrBleeding',
 	'DoLimbAlert',
 	'DoBleedAlert',
+	'ResetAll'
 }
 
 server_exports {
