@@ -1,3 +1,10 @@
+# __THIS RESOURCE IS NO LONGER MAINTAINED__
+Moved onto different things, can't be fucked maintaining public resources for this shithole community anymore.
+
+To the losers who take open-sourced resources and sell them, please die in a fire.
+
+To the losers who sit there and petulantly whine about resources that people make in their own time and cannot gain a damn thing from, please do the entire community a favor and fuck off.
+
 # Mythic Hostpial
 This is a lightweight hosptial & limb damage resource. This was largely done as an experiment so some of it is rough around the edges.
 
